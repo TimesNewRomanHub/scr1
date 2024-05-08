@@ -17,28 +17,28 @@ Disassembly of section .text.init:
 	...
 
 00000400 <trap_vector>:
- 400:	34202773          	csrr	a4,mcause
- 404:	47a1                	li	a5,8
- 406:	04f70263          	beq	a4,a5,44a <_report>
- 40a:	47a5                	li	a5,9
- 40c:	02f70f63          	beq	a4,a5,44a <_report>
- 410:	47ad                	li	a5,11
- 412:	02f70c63          	beq	a4,a5,44a <_report>
- 416:	f0000837          	lui	a6,0xf0000
- 41a:	00001897          	auipc	a7,0x1
- 41e:	96688893          	addi	a7,a7,-1690 # d80 <MSG_TRAP>
+ 400:	f0000837          	lui	a6,0xf0000
+ 404:	00001897          	auipc	a7,0x1
+ 408:	97c88893          	addi	a7,a7,-1668 # d80 <MSG_TRAP>
 
-00000422 <next_iter>:
- 422:	00088783          	lb	a5,0(a7)
- 426:	c791                	beqz	a5,432 <break_from_loop>
- 428:	00f82023          	sw	a5,0(a6) # f0000000 <__global_pointer$+0xefffe938>
- 42c:	0885                	addi	a7,a7,1
- 42e:	ff5ff06f          	j	422 <next_iter>
+0000040c <next_iter>:
+ 40c:	00088783          	lb	a5,0(a7)
+ 410:	c791                	beqz	a5,41c <break_from_loop>
+ 412:	00f82023          	sw	a5,0(a6) # f0000000 <__global_pointer$+0xefffe938>
+ 416:	0885                	addi	a7,a7,1
+ 418:	ff5ff06f          	j	40c <next_iter>
 
-00000432 <break_from_loop>:
+0000041c <break_from_loop>:
+ 41c:	34202773          	csrr	a4,mcause
+ 420:	47a1                	li	a5,8
+ 422:	02f70463          	beq	a4,a5,44a <_report>
+ 426:	47a5                	li	a5,9
+ 428:	02f70163          	beq	a4,a5,44a <_report>
+ 42c:	47ad                	li	a5,11
+ 42e:	00f70e63          	beq	a4,a5,44a <_report>
  432:	00001717          	auipc	a4,0x1
  436:	9c670713          	addi	a4,a4,-1594 # df8 <mtvec_handler>
- 43a:	c311                	beqz	a4,43e <break_from_loop+0xc>
+ 43a:	c311                	beqz	a4,43e <break_from_loop+0x22>
  43c:	8702                	jr	a4
  43e:	34202773          	csrr	a4,mcause
  442:	00075363          	bgez	a4,448 <handle_exception>

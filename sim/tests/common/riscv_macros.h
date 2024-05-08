@@ -110,14 +110,6 @@
         .weak stvec_handler;                                            \
         .weak mtvec_handler;                                            \
 trap_vector:                                                            \
-        /* test whether the test came from pass/fail */                 \
-        csrr a4, mcause;                                                \
-        li a5, CAUSE_USER_ECALL;                                        \
-        beq a4, a5, _report;                                            \
-        li a5, CAUSE_SUPERVISOR_ECALL;                                  \
-        beq a4, a5, _report;                                            \
-        li a5, CAUSE_MACHINE_ECALL;                                     \
-        beq a4, a5, _report;                                            \
         /* init for loop, 0xf0000000 address for print */               \
         lui a6, 0xf0000;                                                \
         la a7, MSG_TRAP;                                                \
@@ -126,8 +118,18 @@ next_iter:                                                              \
         beq a5, x0, break_from_loop;                                    \
         sw a5, 0(a6);   /* write to a6 char for print */                \
         addi a7, a7, 1;                                                 \
-        jal x0,next_iter;                                               \
-break_from_loop:                                                        \
+        jal x0,next_iter;  						   \
+        /* test whether the test came from pass/fail */                 \
+        break_from_loop: 						   \
+        csrr a4, mcause;						   \
+        li a5, CAUSE_USER_ECALL;                                        \
+        beq a4, a5, _report;                                            \
+        li a5, CAUSE_SUPERVISOR_ECALL;                                  \
+        beq a4, a5, _report;                                            \
+        li a5, CAUSE_MACHINE_ECALL;                                     \
+        beq a4, a5, _report;                                            \
+                                                                        \
+                                                                        \
         /* if an mtvec_handler is defined, jump to it */                \
         la a4, mtvec_handler;                                           \
         beqz a4, 1f;                                                    \
